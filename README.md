@@ -1,11 +1,21 @@
-# Project Title
+# Project Description
 
-This is a fullstack E-Commerce App for browser.
+This is a fullstack E-Commerce Web App.
 
-## Getting Started
+## Getting Started Frontend
 
-Instructions to get your project up and running.
+# To run the app
 
-## Usage
+1. npm i
+2. npm start
+3. Open your browser and navigate to http://localhost:3000
 
-How to use your project.
+# Libraries using
+
+- react
+- tailwind
+- react router dom
+- axios
+- react toastify
+
+## Getting Started Backend
