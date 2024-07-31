@@ -2,15 +2,24 @@
 
 This is a fullstack E-Commerce Web App.
 
-## Getting Started Frontend
+### Features
 
-# To run the app
+- Signup
+- Login
+- Authentications
+- Logout
+- Forgot Password
+- Profile
+
+# Getting Started Frontend
+
+## To run the app
 
 1. npm i
 2. npm start
 3. Open your browser and navigate to http://localhost:3000
 
-# Libraries using
+## Libraries using
 
 - react
 - tailwind
@@ -18,4 +27,4 @@ This is a fullstack E-Commerce Web App.
 - axios
 - react toastify
 
-## Getting Started Backend
+# Getting Started Backend
