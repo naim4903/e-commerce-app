@@ -13,11 +13,10 @@ This is a fullstack E-Commerce Web App.
 
 # Getting Started Frontend
 
-## To run the app
+## To run backend code
 
-1. npm i
-2. npm start
-3. Open your browser and navigate to http://localhost:3000
+1. cd backend
+2. npm run dev
 
 ## Libraries using
 
@@ -28,3 +27,7 @@ This is a fullstack E-Commerce Web App.
 - react toastify
 
 # Getting Started Backend
+
+Mongodb credentials
+user - naim4903 pass - naim123
+mongodb+srv://naim4903:naim123@cluster0.dkjhtv0.mongodb.net/
