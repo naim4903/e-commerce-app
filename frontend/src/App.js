@@ -1,14 +1,17 @@
 import React from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Home, Login, Register } from "./pages";
 
 const App = () => {
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <h1 className="text-4xl font-bold text-blue-500">
-          Welcome to my E-Commerce Website
-        </h1>
-      </header>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+      </Routes>
+    </BrowserRouter>
   );
 };
 
