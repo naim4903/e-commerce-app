@@ -1,5 +1,5 @@
 import React from "react";
-
+import { Link } from "react-router-dom";
 
 const Login = () => {
 
@@ -53,9 +53,8 @@ const Login = () => {
                 </div>
                 {/* <!-- ./login with --> */}
 
-                <p class="mt-4 text-center text-gray-600">Don't have account? <a href="register.html"
-                    class="text-primary">Register
-                    now</a></p>
+                <p class="mt-4 text-center text-gray-600">Don't have account? <Link to="/register" class="text-primary">Register
+                    now</Link></p>
             </div>
         </div>
     )

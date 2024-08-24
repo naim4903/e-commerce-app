@@ -1,29 +1,60 @@
 import User from "../Models/user.model.js";
 
-const createUser = async (req, res) => {
-  let data = req.body;
-  console.log("hello")
+let cookieOptions = {
+  httpOnly: true,
+  secure: true,
+  sameSite: "none"
+}
 
-  let newUser = new User(data);
+const register = async (req, res) => {
+  let { email } = req.body;
 
-  let userData = await newUser.save();
+  try {
+    let existUser = await User.findOne({ email: email });
 
-  res.send(userData);
+    if (existUser) {
+      return res
+        .status(400)
+        .send({ result: false, message: "Email already exists" });
+    }
+
+    let newUser = new User(req.body);
+
+    let userData = await newUser.save();
+
+    let token = await userData.generateToken();
+
+    return res
+      .status(200)
+      .cookie("token", token, cookieOptions)
+      .send({
+        result: true,
+        message: "User created successfully",
+        data: userData,
+      });
+  } catch (error) {
+    return res.status(500).send({ result: false, message: error.message });
+  }
 };
 
+const login = async (req, res) => { };
+
+const logout = async (req, res) => { };
 
 const updateUser = async (req, res) => {
   let { email } = req.body;
 
-  let updatedUser = await User.findOneAndUpdate({ email: email }, req.body, { new: true })
+  let updatedUser = await User.findOneAndUpdate({ email: email }, req.body, {
+    new: true,
+  });
 
-  res.send(updatedUser)
-}
+  res.send(updatedUser);
+};
 
 const getAllUsers = async (req, res) => {
   try {
     let users = await User.find();
-    res.status(200).send(users);
+    res.status(200).send({ count: users.length, data: users });
   } catch (error) {
     res.status(500).send({ message: "Error retrieving users", error });
   }
@@ -61,5 +92,12 @@ const deleteUser = async (req, res) => {
   }
 };
 
-
-export { createUser, updateUser, getAllUsers, getUserById, deleteUser };
+export {
+  register,
+  login,
+  logout,
+  updateUser,
+  getAllUsers,
+  getUserById,
+  deleteUser,
+};
