@@ -26,36 +26,40 @@ const userSchema = new Schema({
   addresses: { type: [addressSchema], default: [] }
 });
 
-// Hash password
+// Hash password before saving the user document
 userSchema.pre("save", async function (next) {
   let user = this;
 
-  // only hash the password if it has been modified (or is new)
   if (!user.isModified("password")) {
     return next();
   }
 
   try {
-    let salt = await bcrypt.genSalt(10);
-    let hashedPassword = await bcrypt.hash(user.password, salt)
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(user.password, salt);
 
     user.password = hashedPassword;
-
     next();
   } catch (error) {
-    console.log("Bcrypt error: ", error.message)
+    next(error); // Pass error to the next middleware
   }
+});
 
-})
-
-userSchema.methods.comparePassword = async function (candidatePassword, cb) {
-  return await bcrypt.compare(candidatePassword, this.password);
+// Compare password method
+userSchema.methods.comparePassword = async function (candidatePassword) {
+  try {
+    return await bcrypt.compare(candidatePassword, this.password);
+  } catch (error) {
+    throw new Error("Error comparing passwords");
+  }
 };
 
+// Generate JWT token method
 userSchema.methods.generateToken = function () {
-  return jwt.sign({ id: this._id, email: this.email }, process.env.PRIVATE_KEY);
+  return jwt.sign({ id: this._id, email: this.email }, process.env.PRIVATE_KEY, {
+    expiresIn: "1h" // Optional: Set an expiration time for the token
+  });
 };
-
 
 const User = model("User", userSchema);
 

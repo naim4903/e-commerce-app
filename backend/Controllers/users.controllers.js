@@ -3,8 +3,8 @@ import User from "../Models/user.model.js";
 let cookieOptions = {
   httpOnly: true,
   secure: true,
-  sameSite: "none"
-}
+  sameSite: "none",
+};
 
 const register = async (req, res) => {
   let { email } = req.body;
@@ -24,20 +24,44 @@ const register = async (req, res) => {
 
     let token = await userData.generateToken();
 
-    return res
-      .status(200)
-      .cookie("token", token, cookieOptions)
-      .send({
-        result: true,
-        message: "User created successfully",
-        data: userData,
-      });
+    return res.status(200).cookie("token", token, cookieOptions).send({
+      result: true,
+      message: "User created successfully",
+      data: userData,
+    });
   } catch (error) {
     return res.status(500).send({ result: false, message: error.message });
   }
 };
 
-const login = async (req, res) => { };
+const login = async (req, res) => {
+  let { email, password } = req.body;
+
+  try {
+    let existUser = await User.findOne({ email: email });
+
+    if (!existUser) {
+      return res.status(404).send({ result: false, message: "User not found" });
+    }
+
+    let passwordCheckResult = await existUser.comparePassword(password);
+
+    let token = await existUser.generateToken();
+
+    if (passwordCheckResult) {
+      return res
+        .status(201)
+        .cookie("token", token, cookieOptions)
+        .send({ result: true, message: "Login successful", data: existUser });
+    } else {
+      return res
+        .status(401)
+        .send({ result: false, message: "Password is incorrect" });
+    }
+  } catch (err) {
+    return res.status(500).send({ result: false, message: err.message });
+  }
+};
 
 const logout = async (req, res) => { };
 
